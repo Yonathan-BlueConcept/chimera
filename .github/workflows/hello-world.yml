@@ -1,0 +1,18 @@
+name: My First Action
+# 1. When should this run?
+on: [push]
+
+# 2. What should it do?
+jobs:
+  say-hello:
+    # Which "computer" should GitHub give us?
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Use a pre-made "action" to copy our code into the runner
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Run a simple shell command
+      - name: Run a greeting
+        run: echo "Hello, GitHub Actions is running!"
