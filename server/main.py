@@ -11,7 +11,6 @@ NWS_API_BASE = "https://api.weather.gov"
 USER_AGENT = "weather-app/1.0"
 
 
-
 async def make_nws_request(url: str) -> dict[str,Any]:
     headers = {"User-Agent": USER_AGENT, "accept":"application/json"}
     async with httpx.AsyncClient() as client:
@@ -66,3 +65,8 @@ def echo_resource(message:str)->str:
 @mcp.prompt()
 def review_code(code:str)->str:
     return f"Plase review this code :\n{code}"
+
+if __name__ == "__main__":
+    mcp.run() #
+
+# print("Hello sir")
