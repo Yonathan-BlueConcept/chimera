@@ -1,0 +1,16 @@
+services:
+  mcp-server:
+    build: .
+    # NETWORK MAPPING (Ports)
+    # Access your app at http://localhost:8000
+    ports:
+      - "8000:8000"
+
+    # FOLDER MAPPING (Volumes)
+    # Changes in your project folder reflect in /app
+    volumes:
+      - .:/app
+
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python -u server/main.py
