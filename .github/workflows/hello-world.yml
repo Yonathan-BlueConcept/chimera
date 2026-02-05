@@ -1,18 +1,21 @@
-name: My First Action
-# 1. When should this run?
+name: Python Quality Check
 on: [push]
 
-# 2. What should it do?
 jobs:
-  say-hello:
-    # Which "computer" should GitHub give us?
+  verify-code:
     runs-on: ubuntu-latest
-    
     steps:
-      # Use a pre-made "action" to copy our code into the runner
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Run a simple shell command
-      - name: Run a greeting
-        run: echo "Hello, GitHub Actions is running!"
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Linting Tool
+        run: pip install flake8
+
+      - name: Check for Syntax Errors
+        # This will fail the "build" if there are Python syntax errors
+        run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
