@@ -1,4 +1,2 @@
-def add(a, b):
+def add(a, b) # Missing the colon!
     return a + b
-
-print(add(5, 5))
