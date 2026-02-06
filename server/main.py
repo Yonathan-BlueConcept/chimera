@@ -1,72 +1,20 @@
-from typing import Any
-import httpx
-from mcp.server.fastmcp import FastMCP
+# server.py
+from mcp.server import Server
+
+server = Server("chimera-orchestrator")
 
 
-
-mcp = FastMCP("WeatherService")
-
-
-NWS_API_BASE = "https://api.weather.gov"
-USER_AGENT = "weather-app/1.0"
-
-
-async def make_nws_request(url: str) -> dict[str,Any]:
-    headers = {"User-Agent": USER_AGENT, "accept":"application/json"}
-    async with httpx.AsyncClient() as client:
-        try:
-            response = await client.get(url, headers=headers, timeout=30.0)
-            response.raise_for_status()
-            return response.json()
-        except Exception:
-            return None
-
-
-def format_alert(feature:dict)->str:
-    """ Format an alert feature into readable string"""
-    props = feature["properties"]
-    return f"""
-     Event:{props.get('event','Unknown')}
-     Area:{props.get('areaDesc','Unknown')}
-     """
-
-@mcp.tool()
-async def get_alerts(state: str) -> str:
-    """Get weather alerts for a US state.
-
-    Args: 
-        state: Two-letter US state code (e.g. CA, NY)
+@server.tool()
+async def chat(message: str, document: str | None = None) -> str:
     """
-    url = f"{NWS_API_BASE}/alerts/active/area/{state}"
-    data = await make_nws_request(url)
+    Use this tool to send a message and an optional document to the Chimera orchestrator.
 
-    if not data or "features" not in data:
-        return "Unable to fetch alerts or no alerts found."
+    Args:
+        message: The main query or instruction for the orchestrator.
+        document: Optional text content or code to be processed.
+    """
+    return f"RECEIVED FROM VS CODE CHAT\n\nMessage: <<< {message} >>>"
 
-    if not data["features"]:
-        return "No active alerts for this state."
-
-    alerts = [format_alert(feature) for feature in data["features"]]
-    return "\n---\n".join(alerts)
-
-
-@mcp.resource("config://app")
-def get_config()->str:
-    """static configuration data"""
-    return "App Configuration here"
-
-
-@mcp.resource("echo://{message}")
-def echo_resource(message:str)->str:
-    """Echo a message as a resource"""
-    return f"Resource echo:{message}"
-
-
-@mcp.prompt()
-def review_code(code:str)->str:
-    return f"Plase review this code :\n{code}"
 
 if __name__ == "__main__":
-    mcp.run() #
-
-# print("Hello sir")
+    server.run_stdio()

@@ -15,7 +15,7 @@
                 "run",
                 "-i",
                 "--rm",
-                "chimera-mcp"
+                "chimera-app"
             ]
         }
     },
