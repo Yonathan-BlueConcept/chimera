@@ -20,4 +20,4 @@ COPY . .
 # 7. Run the server
 # --quiet ensures no extra logs mess up the MCP communication
 ENV PYTHONPATH="/app"
-CMD ["python", "-u", "server/main.py"]
+CMD ["python", "-u", "server/orchestrator.py"]
