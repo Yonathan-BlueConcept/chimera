@@ -3,11 +3,18 @@
 ## Prerequisites
 - Docker installed
 
-## Build the image
-docker build -t chimera-app .
+## Docker
 
-## Run the container
-docker run -it -p 8000:8000 --name chimera-container chimera-app
+The Dockerfile is located in `app/`.
+
+Build the image from the repository root:
+
+docker build -f app/Dockerfile -t chimera-app app
+
+Run the container:
+
+docker run -p 8000:8000 chimera-app
+
 
 ## Environment
 - Runs inside Docker
